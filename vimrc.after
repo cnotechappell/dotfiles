@@ -1,0 +1,47 @@
+set hidden
+set guioptions=aAce
+set keymodel-=stopsel
+map <Leader>w :set wrap!<CR>
+colorscheme railscasts
+"let NERDTreeQuitOnOpen=1
+let g:ctrlp_working_path_mode = 0
+call janus#add_mapping('ack', 'map', '<leader>f', ':Ack<space>')
+
+if has("autocmd")
+  autocmd bufwritepost ~/.vimrc.after source ~/.vimrc.after
+endif
+
+nmap <leader>v :tabedit ~/.vimrc.after<CR>
+
+if exists(":Tabularize")
+  nmap <Leader>a= :Tabularize /=<CR>
+  vmap <Leader>a= :Tabularize /=<CR>
+  nmap <Leader>a: :Tabularize /:<CR>
+  vmap <Leader>a: :Tabularize /:<CR>
+endif
+
+" Strip trailing whitespace
+function! <SID>StripTrailingWhitespaces()
+    " Preparation: save last search, and cursor position.
+    let _s=@/
+    let l = line(".")
+    let c = col(".")
+    " Do the business:
+    %s/\s\+$//e
+    " Clean up: restore previous search history, and cursor position
+    let @/=_s
+    call cursor(l, c)
+endfunction
+
+autocmd BufWritePre * :call <SID>StripTrailingWhitespaces()
+au BufNewFile,BufRead *.vm set filetype=html
+autocmd FileType java compile ant
+autocmd FileType java map <F2> :source $HOME/vim/newclass.vim<CR>
+autocmd FileType java map <F3> :source $HOME/vim/chwd.vim<CR>
+autocmd FileType java map <F4> :source $HOME/vim/javarun.vim<CR>
+autocmd FileType java map <F5> :if getbufvar("%", "&mod")<CR>:w<CR>:endif<CR>:make<CR>
+"autocmd FileType java map <F5> :if getbufvar("%", "&mod")<CR>:w<CR>:endif<CR>:make<CR>:copen 5<CR>
+autocmd FileType xml map <F5> :if getbufvar("%", "&mod")<CR>:w<CR>:endif<CR>:make<CR>:copen 5<CR>
+autocmd FileType java map <F6> :make <CR>:copen 5<CR>
+autocmd FileType xml map <F6> :make <CR>:copen 5<CR>
+autocmd FileType java map <F7> :source $HOME/vim/prop.vim<CR>
