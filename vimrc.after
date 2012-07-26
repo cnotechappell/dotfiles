@@ -33,6 +33,13 @@ function! <SID>StripTrailingWhitespaces()
     call cursor(l, c)
 endfunction
 
+function! <SID>DescribeModel()
+  let model = rails#pluralize(rails#underscore(expand("<cword>")))
+  DBDescribeTable(model)
+endfunction
+
+nmap <Leader>dt :call <SID>DescribeModel()<CR>
+
 autocmd BufWritePre * :call <SID>StripTrailingWhitespaces()
 au BufNewFile,BufRead *.vm set filetype=html
 autocmd FileType java compile ant
